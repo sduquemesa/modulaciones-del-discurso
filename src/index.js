@@ -2,6 +2,7 @@ import p5 from 'p5/lib/p5.min';
 import Tone from 'tone';
 import tsnejs from 'tsne';
 import StartAudioContext from 'startaudiocontext';
+import moment from 'moment';
 
 const sketch = (p) => {
 
@@ -78,6 +79,10 @@ const sketch = (p) => {
 	let  easing = 0.9;
 	let synths = [];
 
+	moment.locale('es');
+	let date = moment("2020-06-13 00:00");
+
+	var player;
 
 	var panner = new Tone.Panner(-1).toMaster();
 	var freeverb = new Tone.Freeverb().connect(panner);
@@ -111,10 +116,18 @@ const sketch = (p) => {
             }).connect(freeverb));
 	}
 
+	p.preload = () => {
+		player = new Tone.Player('./src/audio.mp3').toMaster();
+		player.autostart = true;
+	}
+
 	p.setup = () => {
+
 		let canvas = p.createCanvas(p.windowWidth-100,p.windowHeight-20, p.WEBGL);
 		p.smooth();
 
+		// console.log(player);
+		
 		let opt = {}
   		opt.epsilon = 30; // epsilon is learning rate (10 = default)
   		opt.perplexity = 30; // roughly how many neighbors each point influences (30 = default)
@@ -134,12 +147,13 @@ const sketch = (p) => {
 		
   		  let d = new DataPoint();
   		  // use data as color components for the datapoints
-  		  d.setCol( f1, f2, f3, 255 ).setSize(f2/20 + 2);
+  		  d.setCol( f1, f2, f3, 255 ).setSize(f1/20 + 2);
   			data.push(d);
   		}
   		
   		tsne.initDataRaw(features);
-  		Y = tsne.getSolution(); // Y is an array of 2-D points that you can plot
+		  Y = tsne.getSolution(); // Y is an array of 2-D points that you can plot
+	
 	}
 
 
@@ -148,7 +162,7 @@ const sketch = (p) => {
 
 		p.camera(p.sin(p.frameCount/300) * 100, p.cos(p.frameCount/300) * 100, 800, 0, 0, 0, 0, 1, 0);
 		p.background(0);
-		p.frameRate(24);
+		p.frameRate(60);
 
 		let targetX = p.constrain(p.mouseX + p.sin(-p.frameCount/20) * 80,0,p.width);
   		let dx = targetX - x;
@@ -215,7 +229,13 @@ const sketch = (p) => {
 
   		p.noFill();
   		// p.stroke(255, 50);
-  		p.box(500);
+		  p.box(500);
+		 
+		date = date.add(1,'m');
+		// console.log(date.format("dddd, MMMM DD YYYY, HH:mm"));
+
+		
+
 	}
 
   p.keyPressed = () => {

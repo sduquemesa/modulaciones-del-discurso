@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@tensorflow/tfjs": "^0.13.4",
+    "moment": "^2.27.0",
     "p5": "^0.7.2",
     "startaudiocontext": "^1.2.1",
     "tfjs": "^0.6.0",
