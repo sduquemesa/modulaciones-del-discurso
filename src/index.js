@@ -117,7 +117,11 @@ const sketch = (p) => {
 	}
 
 	p.preload = () => {
-		player = new Tone.Player('./src/audio.mp3').toMaster();
+		player = new Tone.Player({
+									"url" : './src/audio.mp3',
+									"autostart" : true,
+									"loop": true,
+								}).toMaster();
 		player.autostart = true;
 	}
 
