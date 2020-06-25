@@ -1,6 +1,5 @@
 import p5 from 'p5/lib/p5.min';
 import Tone from 'tone';
-import tsnejs from 'tsne';
 import StartAudioContext from 'startaudiocontext';
 import moment from 'moment';
 
@@ -10,32 +9,33 @@ const sketch = (p) => {
 		constructor() {
   			this.pos = p.createVector(0,0,0);
   			this.label = "";
-  			this.color = p.color(255);
+  			this.color = p.color(0,255,255,255);
   			this.size = 1;
   			this.trig = 0;
   			this.canTrig = true;
 		}
 
   		drawPoint(){
-  		  p.noStroke();
-  		  p.fill(this.color);
-  		  p.ambientMaterial(this.r, this.r,this.r);
-  		  p.push();
-  		  p.translate(this.pos.x, this.pos.y, this.pos.z);
-  		  //p.rotateX(this.size,0,0);
-  		  p.box(this.size);
-
-  		  p.fill(255,0,0,this.trig);
-  		  p.box(this.size * 1.5);
+			// p.noStroke();
+			p.strokeWeight(0.1);
+			p.fill(this.color);
+			p.ambientMaterial(this.r, this.r,this.r);
+			p.push();
+			p.translate(this.pos.x, this.pos.y, this.pos.z);
+  		//   p.rotateX(this.size,0,0);
+  		  	p.box(this.size);
+			p.fill(this.color);
+  		//   p.fill(255,0,0,this.trig);
+  		  	p.box(this.size * 1.5);
   		  
-  		  if(this.trig == 255) {
-  		  	if(this.canTrig) {
-  		  		let rnd = p.floor(p.random(10));
-  		  		synths[ rnd ].envelope.attack = this.r/1000;
-  		  		synths[ rnd ].triggerAttackRelease( Tone.Midi( ((255/20 + 2) - this.size + 2) * 10 ).toFrequency(), this.size/500);
-  		  		this.canTrig = false;
-  		  	}
-  		  }
+			if(this.trig == 255) {
+				if(this.canTrig) {
+					let rnd = p.floor(p.random(10));
+					synths[ rnd ].envelope.attack = this.r/1000;
+					synths[ rnd ].triggerAttackRelease( Tone.Midi( ((255/20 + 2) - this.size + 2) * 10 ).toFrequency(), this.size/500);
+					this.canTrig = false;
+				}
+			}
 
 
   		  this.trig-=100;
@@ -50,11 +50,11 @@ const sketch = (p) => {
   			return this;
   		}
 		
-  		setCol(r,g,b,a) {
-  			this.color = p.color(r,g,b,a);
-  			this.r = r;
-  			this.g = g;
-  			this.b = b;
+  		setCol(color_string) {
+  			this.color = p.color(color_string);
+  			this.r = 255;
+  			this.g = 255;
+  			this.b = 255;
   			return this;
   		}
 		
@@ -76,13 +76,17 @@ const sketch = (p) => {
 	
 	let x = 0;
 	let y = 0;
-	let  easing = 0.9;
+	let easing = 0.9;
 	let synths = [];
 
-	moment.locale('es');
-	let date = moment("2020-06-13 00:00");
-
 	var player;
+
+	var tsne_data = null;
+	var date = null;
+
+	let color_palette = ['rgb(166,206,227)','rgb(31,120,180)','rgb(178,223,138)','rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)','rgb(255,127,0)','rgb(202,178,214)','rgb(106,61,154)']
+
+	moment.locale('es');
 
 	var panner = new Tone.Panner(-1).toMaster();
 	var freeverb = new Tone.Freeverb().connect(panner);
@@ -118,11 +122,13 @@ const sketch = (p) => {
 
 	p.preload = () => {
 		player = new Tone.Player({
-									"url" : './src/audio.mp3',
+									"url" : './assets/audio.mp3',
 									"autostart" : true,
 									"loop": true,
 								}).toMaster();
 		player.autostart = true;
+
+		tsne_data = p.loadJSON("/assets/tweets_tsne.json");
 	}
 
 	p.setup = () => {
@@ -131,41 +137,47 @@ const sketch = (p) => {
 		p.smooth();
 
 		// console.log(player);
-		
-		let opt = {}
-  		opt.epsilon = 30; // epsilon is learning rate (10 = default)
-  		opt.perplexity = 30; // roughly how many neighbors each point influences (30 = default)
-  		opt.dim = 3; // dimensionality of the embedding (2 = default)
-		
-  		tsne = new tsnejs.tSNE(opt); // create a tSNE instance
-  		
-  		for(let i=0; i<num; i++) {
-  		  
-  		  // generating random data
-  		  let f1 = p.random(255);
-  		  let f2 = p.random(255);
-  		  let f3 = p.random(255);
-		
-  		  // add generated data to an array of feature vectors
-  		  features.push( [f1, f2, f3] ); // feature vector's length (components) can be selected freely
-		
-  		  let d = new DataPoint();
-  		  // use data as color components for the datapoints
-  		  d.setCol( f1, f2, f3, 255 ).setSize(f1/20 + 2);
-  			data.push(d);
-  		}
-  		
-  		tsne.initDataRaw(features);
-		  Y = tsne.getSolution(); // Y is an array of 2-D points that you can plot
+		// console.log('data',tsne_data);
+
+		date = moment(tsne_data['0'].date);
+		var data_length = Object.keys(tsne_data).length;
+		// console.log('data',data_length);
+				
+		// console.log('setup',date,tsne_data);
+		// console.group('initialize data')
+  		for(let i=0; i<1000; i++) {			
+
+			// getting data from tsne
+			let f1 = tsne_data[i].tsne_coords_1*10;
+			let f2 = tsne_data[i].tsne_coords_2*10;
+			let f3 = tsne_data[i].tsne_coords_3*10;
+
+			// let f1 = p.random(255);
+			// let f2 = p.random(255);
+			// let f3 = p.random(255);
 	
+			// add generated data to an array of feature vectors
+			features.push( [f1, f2, f3] ); // feature vector's length (components) can be selected freely
+		
+			let d = new DataPoint();
+			// use data as color components for the datapoints
+			// d.setCol( f1, f2, f3, 255 ).setSize(f1/20 + 2);
+			// d.setCol( 255, 255, tsne_data[i].topic_num*25.5, 255 ).setSize(f1/20 + 2);
+			d.setCol( color_palette[tsne_data[i].topic_num] ).setSize(p.dist(f1,f2,f3,0, 0,0)*0.2);
+			data.push(d);	
+			
+		  }
+		//   console.groupEnd();
+  		
+		Y = features;
 	}
 
 
 	let zp = 0;
 	p.draw = () => {
 
-		p.camera(p.sin(p.frameCount/300) * 100, p.cos(p.frameCount/300) * 100, 800, 0, 0, 0, 0, 1, 0);
-		p.background(0);
+		p.camera(p.sin(p.frameCount/300) * 10, p.cos(p.frameCount/300) * 10, (p.cos(p.frameCount/600)/8+1)*200, 0, 0, 0, 0, 1, 0);
+		p.background(30);
 		p.frameRate(60);
 
 		let targetX = p.constrain(p.mouseX + p.sin(-p.frameCount/20) * 80,0,p.width);
@@ -176,8 +188,8 @@ const sketch = (p) => {
   		let dy = targetY - y;
   		y += dy * easing;
 		
-		playHeadx = p.map(x,0,p.width,-250,250);
-		playHeady = p.map(y,0,p.height,-250,250);
+		playHeadx = p.map(x,0,p.width,-50,50);
+		playHeady = p.map(y,0,p.height,-50,50);
 		
 		/*if(playHeadx > 250) {
 			playHeadx = -250;
@@ -188,54 +200,54 @@ const sketch = (p) => {
 
 		panner.pan.value = playHeadx / 250;
 
-		p.pointLight(150, 150, 150, 500, 0, 200);
-		//p.directionalLight(255,255,255, -1, 0, -1);
-		p.ambientLight(255);
+		p.pointLight(150, 150, 150, p.frameCount%p.width, 0, 200);
+		// p.directionalLight(255,255,255, -1, 0, -1);
+		p.ambientLight(0);
 
 		//p.rotateY(p.sin(p.frameCount/1000) * p.PI/4);
 		//p.rotateX(-p.frameCount/1000);
 
-		zp = p.sin(p.frameCount/100) * 250;
-		p.push();
-		p.translate(playHeadx,0,0);
-		p.fill(255,120);
-		p.noStroke();
-		// p.box(5,500,0);
-		p.pop();
+		// zp = p.sin(p.frameCount/100) * 250;
+		// p.push();
+		// p.translate(playHeadx,0,0);
+		// p.fill(255,120);
+		// p.noStroke();
+		// p.box(1,500,0);
+		// p.pop();
 
-		p.push();
-		p.translate(0,playHeady,0);
-		p.fill(255,120);
-		p.noStroke();
-		// p.box(500,5,0);
-		p.pop();
+		// p.push();
+		// p.translate(0,playHeady,0);
+		// p.fill(255,120);
+		// p.noStroke();
+		// p.box(500,1,0);
+		// p.pop();
 
-		p.push();
-		p.translate(playHeadx,playHeady,0);
-		p.fill(255,0,0,40);
-		p.noStroke();
-		// p.box(5,5,500);
-		p.pop();
+		// p.push();
+		// p.translate(playHeadx,playHeady,0);
+		// p.fill(255,0,0,40);
+		// p.noStroke();
+		// p.box(1,1,500);
+		// p.pop();
 
 		stepCount++;
   		if(stepCount<600) {
-    		tsne.step();
+    		// tsne.step();
   		}
 
   		for(let i=0; i< Y.length; i++) {
     		data[i].setPos( p.createVector(Y[i][0] * 10, Y[i][1] * 10, Y[i][2] * 10) ).drawPoint();
-    		if(p.dist(data[i].pos.x,data[i].pos.y,0, playHeadx,playHeady, 0) <= 10) {
+    		if(p.dist(data[i].pos.x,data[i].pos.y,0, playHeadx,playHeady, 0) <= 100) {
     			data[i].trig = 255;
     		} else {
     			data[i].canTrig = true;
     		}
   		}
 
-  		p.noFill();
+  		// p.noFill();
   		// p.stroke(255, 50);
-		  p.box(500);
+		// p.box(500);
 		 
-		date = date.add(1,'m');
+		// date = date.add(1,'m');
 		// console.log(date.format("dddd, MMMM DD YYYY, HH:mm"));
 
 		
