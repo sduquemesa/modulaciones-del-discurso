@@ -25,7 +25,7 @@ const sketch = (p) => {
   		//   p.rotateX(this.size,0,0);
   		  	p.box(this.size);
 			p.fill(this.color);
-  		//   p.fill(255,0,0,this.trig);
+  		  	// p.fill(255,0,0,this.trig);
   		  	p.box(this.size * 1.5);
   		  
 			if(this.trig == 255) {
@@ -52,9 +52,9 @@ const sketch = (p) => {
 		
   		setCol(color_string) {
   			this.color = p.color(color_string);
-  			this.r = 255;
-  			this.g = 255;
-  			this.b = 255;
+  			this.r = 0;
+  			this.g = 0;
+  			this.b = 0;
   			return this;
   		}
 		
@@ -64,8 +64,6 @@ const sketch = (p) => {
   		}
 	}
 
-	let num = 500;
-	let tsne;
 	let Y;
 	let stepCount = 0;
 	let data = [];
@@ -81,8 +79,11 @@ const sketch = (p) => {
 
 	var player;
 
+	var last_index = 0;
+
 	var tsne_data = null;
-	var date = null;
+	var data_length = null;
+	var current_date = null;
 
 	let color_palette = ['rgb(166,206,227)','rgb(31,120,180)','rgb(178,223,138)','rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)','rgb(255,127,0)','rgb(202,178,214)','rgb(106,61,154)']
 
@@ -136,57 +137,55 @@ const sketch = (p) => {
 		let canvas = p.createCanvas(p.windowWidth-100,p.windowHeight-20, p.WEBGL);
 		p.smooth();
 
-		// console.log(player);
-		// console.log('data',tsne_data);
+		data_length = Object.keys(tsne_data).length;
 
-		date = moment(tsne_data['0'].date);
-		var data_length = Object.keys(tsne_data).length;
-		// console.log('data',data_length);
-				
-		// console.log('setup',date,tsne_data);
-		// console.group('initialize data')
-  		for(let i=0; i<1000; i++) {			
+		current_date = moment(tsne_data[100].date);
 
-			// getting data from tsne
-			let f1 = tsne_data[i].tsne_coords_1*10;
-			let f2 = tsne_data[i].tsne_coords_2*10;
-			let f3 = tsne_data[i].tsne_coords_3*10;
-
-			// let f1 = p.random(255);
-			// let f2 = p.random(255);
-			// let f3 = p.random(255);
-	
-			// add generated data to an array of feature vectors
-			features.push( [f1, f2, f3] ); // feature vector's length (components) can be selected freely
-		
-			let d = new DataPoint();
-			// use data as color components for the datapoints
-			// d.setCol( f1, f2, f3, 255 ).setSize(f1/20 + 2);
-			// d.setCol( 255, 255, tsne_data[i].topic_num*25.5, 255 ).setSize(f1/20 + 2);
-			d.setCol( color_palette[tsne_data[i].topic_num] ).setSize(p.dist(f1,f2,f3,0, 0,0)*0.2);
-			data.push(d);	
+		// console.log(date.format('MM-DD-YYYY HH:mm'))
+  		// for(let i=0; i<data_length; i++) {			
 			
-		  }
-		//   console.groupEnd();
+		// 	if ( current_date.format('MM-DD-YYYY HH') == moment(tsne_data[i].date).format('MM-DD-YYYY HH') ) {
+
+		// 		// getting data from tsne
+		// 		let f1 = tsne_data[i].tsne_coords_1*10;
+		// 		let f2 = tsne_data[i].tsne_coords_2*10;
+		// 		let f3 = tsne_data[i].tsne_coords_3*10;
+
+		// 		// let f1 = p.random(255);
+		// 		// let f2 = p.random(255);
+		// 		// let f3 = p.random(255);
+		
+		// 		// add generated data to an array of feature vectors
+		// 		features.push( [f1, f2, f3] ); // feature vector's length (components) can be selected freely
+			
+		// 		let d = new DataPoint();
+		// 		// use data as color components for the datapoints
+		// 		// d.setCol( f1, f2, f3, 255 ).setSize(f1/20 + 2);
+		// 		// d.setCol( 255, 255, tsne_data[i].topic_num*25.5, 255 ).setSize(f1/20 + 2);
+		// 		d.setCol( color_palette[tsne_data[i].topic_num] ).setSize(1);
+		// 		data.push(d);	
+		// 	}
+
+		// }
   		
-		Y = features;
+		// Y = features;
 	}
 
 
 	let zp = 0;
 	p.draw = () => {
 
-		p.camera(p.sin(p.frameCount/300) * 10, p.cos(p.frameCount/300) * 10, (p.cos(p.frameCount/600)/8+1)*200, 0, 0, 0, 0, 1, 0);
-		p.background(30);
+		let targetX = p.constrain(p.mouseX/p.width * 10 + p.sin(-p.frameCount/20) * 1,0,p.width);
+		let dx = targetX - x;
+		x += dx * easing;
+
+		let targetY = p.constrain(p.mouseY/p.height * 10  + p.cos(-p.frameCount/20) * 1,0,p.height);
+		let dy = targetY - y;
+		y += dy * easing;
+
+		p.camera(p.sin(p.frameCount/300) * 10+x, p.cos(p.frameCount/300) * 10+y, (p.cos(p.frameCount/600)/8+1)*175, 0, 0, 0, 0, 1, 0);
+		p.background(0);
 		p.frameRate(60);
-
-		let targetX = p.constrain(p.mouseX + p.sin(-p.frameCount/20) * 80,0,p.width);
-  		let dx = targetX - x;
-  		x += dx * easing;
-
-  		let targetY = p.constrain(p.mouseY + p.cos(-p.frameCount/20) * 80,0,p.height);
-  		let dy = targetY - y;
-  		y += dy * easing;
 		
 		playHeadx = p.map(x,0,p.width,-50,50);
 		playHeady = p.map(y,0,p.height,-50,50);
@@ -234,14 +233,37 @@ const sketch = (p) => {
     		// tsne.step();
   		}
 
-  		for(let i=0; i< Y.length; i++) {
-    		data[i].setPos( p.createVector(Y[i][0] * 10, Y[i][1] * 10, Y[i][2] * 10) ).drawPoint();
-    		if(p.dist(data[i].pos.x,data[i].pos.y,0, playHeadx,playHeady, 0) <= 100) {
-    			data[i].trig = 255;
-    		} else {
-    			data[i].canTrig = true;
-    		}
-  		}
+		let an_hour_before = current_date.clone().subtract(1,'hours');
+		
+  		for(let i=last_index; i < data_length; i++) {
+
+			if ( moment(tsne_data[i].date).isBetween(an_hour_before,current_date)  ){
+
+				let x_coord = tsne_data[i].tsne_coords_1*100;
+				let y_coord = tsne_data[i].tsne_coords_2*100;
+				let z_coord = tsne_data[i].tsne_coords_3*100;
+
+				let d = new DataPoint();
+
+				d.setCol( color_palette[tsne_data[i].topic_num] ).setSize(2);
+				d.setPos( p.createVector(x_coord, y_coord, z_coord) ).drawPoint();
+				
+				// if(p.dist(data[i].pos.x,data[i].pos.y,0, playHeadx,playHeady, 0) <= 100) {
+				// 	data[i].trig = 255;
+				// } else {
+				// 	data[i].canTrig = true;
+				// }
+
+			} else if (moment(tsne_data[i].date).isBefore(an_hour_before)) {
+				last_index = i;
+			} else if (moment(tsne_data[i].date).isAfter(current_date)) {
+				break;
+			}
+			
+		}
+
+		current_date = current_date.add(1,'m');
+	
 
   		// p.noFill();
   		// p.stroke(255, 50);
