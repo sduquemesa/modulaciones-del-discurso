@@ -175,11 +175,11 @@ const sketch = (p) => {
 	let zp = 0;
 	p.draw = () => {
 
-		let targetX = p.constrain(p.mouseX/p.width * 10 + p.sin(-p.frameCount/20) * 1,0,p.width);
+		let targetX = p.constrain(p.mouseX/p.width * 10 + p.sin(-p.frameCount/200) * 200,0,p.width);
 		let dx = targetX - x;
 		x += dx * easing;
 
-		let targetY = p.constrain(p.mouseY/p.height * 10  + p.cos(-p.frameCount/20) * 1,0,p.height);
+		let targetY = p.constrain(p.mouseY/p.height * 10  + p.cos(-p.frameCount/200) * 200,0,p.height);
 		let dy = targetY - y;
 		y += dy * easing;
 
@@ -245,7 +245,7 @@ const sketch = (p) => {
 
 				let d = new DataPoint();
 
-				d.setCol( color_palette[tsne_data[i].topic_num] ).setSize(2);
+				d.setCol( color_palette[tsne_data[i].topic_num] ).setSize(1);
 				d.setPos( p.createVector(x_coord, y_coord, z_coord) ).drawPoint();
 				
 				// if(p.dist(data[i].pos.x,data[i].pos.y,0, playHeadx,playHeady, 0) <= 100) {
