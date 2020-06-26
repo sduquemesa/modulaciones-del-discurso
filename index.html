@@ -3,7 +3,7 @@
   <head>
 	<link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Open+Sans:wght@700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Quattrocento:wght@700&display=swap" rel="stylesheet">
     <title>Modulaciones del Discurso</title>
     <style>
 		body {
@@ -41,9 +41,6 @@
 		
 		.counter-container {
 			color: antiquewhite;
-			/* display: flex; */
-			/* justify-content: space-between; */
-			font-family: 'Orbitron', sans-serif;
 			font-size: 1.5vw;
 			position: fixed;
 			width: 400px;
@@ -53,36 +50,22 @@
 			margin: 0 auto;
 		}
 
-		/* .counter-day {
-			color: antiquewhite;
+		.counter-day {
 			font-family: 'Orbitron', sans-serif;
-			font-size: 1.5rem;
-			position: fixed;
-			left: 50%;
-			bottom: 20px;
-			transform: translate(-50%, -50%);
-			margin: 0 auto;
 		}
 
 		.counter-hour {
-			color: antiquewhite;
 			font-family: 'Orbitron', sans-serif;
-			font-size: 1.5rem;
-			position: fixed;
-			left: 50%;
-			bottom: 20px;
-			transform: translate(-50%, -50%);
-			margin: 0 auto;
-		} */
+		}
 
 		nav {
-			height: 20px;
+			height: 40px;
 			background-color: transparent;
 		}
 
 		.button {
-			font-size: 0.4em;
-			padding: 2px 5px 2px 5px;
+			font-size: 30px;
+			padding: 2px 18px 2px 18px;
 			color: #fff;
 			border: 0.5px solid whitesmoke;
 			border-radius: 100%;
@@ -90,6 +73,7 @@
 			cursor: pointer;
 			transition: all 0.3s ease-out;
 			position: fixed;
+			top: 2vw;
 			right: 2vw;
 			font-family: 'Roboto', sans-serif;
 		}
@@ -117,27 +101,29 @@
 			margin: 10vh auto;
 			padding: 1rem;
 			background: whitesmoke;
+			opacity: 0.8;
 			border-radius: 5px;
 			width: 30%;
-			height: 60vh;
+			height: 80%;
 			position: relative;
-			transition: all 5s ease-in-out;
+			transition: all 1s ease-in-out;
 		}
 
 		.popup h2 {
-			margin-top: 0;
+			margin-top: 3vh;
 			color: black;
-			font-family: 'Montserrat', sans-serif;
-			font-size: 0.6em;
+			font-family: 'Quattrocento', serif;
+			font-size: 2vw;
 			text-align: center;
-			font-weight: 700;
+			font-weight: bold;
+			padding-top: 5vh;
 		}
 		.popup .close {
 			position: absolute;
-			top: 0.5rem;
-			left: 0.5rem;
+			top: 1vmin;
+			left: 2vmin;
 			transition: all 200ms;
-			font-size: 14px;
+			font-size: 5vmin;
 			font-weight: bold;
 			text-decoration: none;
 			color: #333;
@@ -146,12 +132,31 @@
 			color: gray;
 		}
 		.popup .content {
-			max-height: 80vh;
-			padding: 0 auto 0 auto;
-			color: #333;
-			overflow: auto;
+			display: flex;
+			flex-direction: column;
+			font-size: 1em;
+			/* background-color: aqua; */
+			height: 100%;
+			padding-right: 1em;
+		}
+
+		p {
 			font-family: 'Open Sans', sans-serif;
-			font-size: 3.5px;
+			text-justify: auto;
+		}
+
+		.logo-ethos {
+			justify-self: flex-end;
+			align-self: center;
+			width: 60%;
+			
+		}
+
+		.logo-catul {
+			justify-self: flex-end;
+			align-self: center;
+			width: 90%;
+			/* bottom: 1vh; */
 		}
 
 	</style>
@@ -172,9 +177,14 @@
 			<h2>Modulaciones del Discurso</h2>
 			<a class="close" href="#">&times;</a>
 			<div class="content">
-				Aqui va el texto  
+				<p>El tiempo y su flujo son los agentes de la memoria. A este, el tiempo, le sobreviene el olvido o la historia, historia que efímera o persistente se define ahora en lo digital. </p>
+				<p>¿De qué habla Medellín y qué tanto perdura?</p>
+				<p>Esta intervención explora la persistencia de los tópicos de ciudad a partir de los Twits publicados por sus habitantes. Un algoritmo de Inteligencia Artificial clasifica los tweets de acuerdo a sus relaciones textuales y, partiendo de estos datos, crea una experiencia audiovisual que pone en evidencia las relaciones ocultas entre aquello que decimos y su transcurrir.</p>
+				<p></p>
+				<img src="assets\ETlogo.svg" alt="Ethos Tekne" class='logo-ethos'>
+				<img src="assets\logoCATUL.png" alt="Logo red CATUL" class='logo-catul'>
 			</div>
-			
+
 		</div>
 	</div>
 	<script src="dist/main.js"></script>

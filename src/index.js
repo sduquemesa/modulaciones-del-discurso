@@ -27,10 +27,10 @@ const sketch = (p) => {
 			p.push();
 			p.translate(this.pos.x, this.pos.y, this.pos.z);
   		//   p.rotateX(this.size,0,0);
-			p.box(this.size);
+			// p.box(this.size*1.5);
 			p.fill(this.color);
 			// p.fill(255,0,0,this.trig);
-			p.box(this.size * 1.5);
+			p.box(this.size*2);
 		
 			// let rnd = p.floor(p.random(10));
 			// synths[ rnd ].envelope.attack = 1/1000;
@@ -46,10 +46,9 @@ const sketch = (p) => {
 			// }
 
 
-  		  this.trig-=100;
+  		  	this.trig-=100;
 
-  		  p.pop();
-
+  		  	p.pop();
 
   		}
 		
@@ -141,7 +140,7 @@ const sketch = (p) => {
 
 	p.setup = () => {
 
-		let canvas = p.createCanvas(p.windowWidth-20,p.windowHeight-20, p.WEBGL);
+		let canvas = p.createCanvas(p.windowWidth,p.windowHeight, p.WEBGL);
 
 		p.smooth();
 
@@ -159,11 +158,11 @@ const sketch = (p) => {
 	let zp = 0;
 	p.draw = () => {
 
-		let targetX = p.map(p.mouseX,0,p.width,-10,10);
+		let targetX = p.map(p.mouseX,0,p.width,-20,20);
 		let dx = targetX - x;
 		x += dx * easing;
 
-		let targetY = p.map(p.mouseY,0,p.height,-10,10);
+		let targetY = p.map(p.mouseY,0,p.height,-20,20);
 		let dy = targetY - y;
 		y += dy * easing;
 
