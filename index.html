@@ -64,8 +64,8 @@
 		}
 
 		.button {
-			font-size: 30px;
-			padding: 2px 18px 2px 18px;
+			font-size: 25px;
+			padding: 2px 15px 2px 15px;
 			color: #fff;
 			border: 0.5px solid whitesmoke;
 			border-radius: 100%;
@@ -107,10 +107,13 @@
 			height: 80%;
 			position: relative;
 			transition: all 1s ease-in-out;
+			/* display: flex;
+			justify-content: space-evenly; */
 		}
 
 		.popup h2 {
 			margin-top: 3vh;
+			/* padding-bottom: 1.5vh; */
 			color: black;
 			font-family: 'Quattrocento', serif;
 			font-size: 2vw;
@@ -134,11 +137,15 @@
 		.popup .content {
 			display: flex;
 			flex-direction: column;
-			font-size: 1em;
+			justify-content: center;
+			font-size: 0.75em;
 			/* background-color: aqua; */
-			height: 100%;
+			height: 80%;
 			padding-right: 1em;
+			overflow-y: auto;
 		}
+
+		
 
 		p {
 			font-family: 'Open Sans', sans-serif;
@@ -174,8 +181,8 @@
 	</div>
 	<div id="popup1" class="overlay">
 		<div class="popup">
-			<h2>Modulaciones del Discurso</h2>
 			<a class="close" href="#">&times;</a>
+			<h2>Modulaciones del Discurso</h2>
 			<div class="content">
 				<p>El tiempo y su flujo son los agentes de la memoria. A este, el tiempo, le sobreviene el olvido o la historia, historia que efímera o persistente se define ahora en lo digital. </p>
 				<p>¿De qué habla Medellín y qué tanto perdura?</p>
@@ -187,6 +194,7 @@
 
 		</div>
 	</div>
+	<div id="p5_loading" class="loadingclass">this could be some sweet graphics loading lots of bits.</div>
 	<script src="dist/main.js"></script>
   </body>
 </html>
