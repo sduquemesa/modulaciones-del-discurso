@@ -168,7 +168,7 @@ const sketch = (p) => {
 		let dy = targetY - y;
 		y += dy * easing;
 
-		p.camera(p.sin(p.frameCount/300) * 10+x, p.cos(p.frameCount/300) * 20+y, (p.cos(p.frameCount/600)/8+0.5)*250, 0, 0, 0, 0, 1, 0);
+		p.camera(p.sin(p.frameCount/300) * 10+x, p.cos(p.frameCount/300) * 20+y, (p.cos(p.frameCount/400)/8+0.4)*500, 0, 0, 0, 0, 1, 0);
 		// p.background(150);
 		p.clear();
 	
