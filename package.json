@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "moment": "^2.27.0",
-    "p5": "^0.7.2",
+    "p5": "^0.7.3",
     "startaudiocontext": "^1.2.1",
     "tone": "^0.12.80"
   }

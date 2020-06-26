@@ -1,10 +1,15 @@
 import p5 from 'p5/lib/p5.min';
+import 'p5/lib/addons/p5.dom.min';
 import Tone from 'tone';
 import StartAudioContext from 'startaudiocontext';
 import moment from 'moment';
 
+var counter = document.getElementById('counter');
+counter.innerHTML = 'hola';
+
 const sketch = (p) => {
 
+	console.log(p);
 	class DataPoint {
 		constructor() {
   			this.pos = p.createVector(0,0,0);
@@ -90,7 +95,6 @@ const sketch = (p) => {
 
 	let color_palette = ['rgb(166,206,227)','rgb(31,120,180)','rgb(178,223,138)','rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)','rgb(255,127,0)','rgb(202,178,214)','rgb(106,61,154)']
 
-
 	moment.locale('es');
 
 	var panner = new Tone.Panner(-1).toMaster();
@@ -138,7 +142,8 @@ const sketch = (p) => {
 
 	p.setup = () => {
 
-		let canvas = p.createCanvas(p.windowWidth-20,p.windowHeight-50, p.WEBGL);
+		let canvas = p.createCanvas(p.windowWidth-20,p.windowHeight-20, p.WEBGL);
+
 		p.smooth();
 
 		data_length = Object.keys(tsne_data).length;
@@ -146,36 +151,37 @@ const sketch = (p) => {
 		current_date = moment(tsne_data[100].date);
 		// const counter = selectAll('.counter');
 
+		p.frameRate(60);
+
+
 	}
 
 
 	let zp = 0;
 	p.draw = () => {
 
-		let targetX = p.map(p.mouseX,0,p.width,-10,10);
+		let targetX = p.map(p.mouseX,0,p.width,-1,1);
 		let dx = targetX - x;
 		x += dx * easing;
 
-		let targetY = p.map(p.mouseY,0,p.height,-10,10);
+		let targetY = p.map(p.mouseY,0,p.height,-1,1);
 		let dy = targetY - y;
 		y += dy * easing;
 
-		p.camera(p.sin(p.frameCount/300) * 100+x, p.cos(p.frameCount/300) * 200+y, (p.cos(p.frameCount/600)/8+1)*175, 0, 0, 0, 0, 1, 0);
-		p.background(150);
+		p.camera(p.sin(p.frameCount/300) * 10+x, p.cos(p.frameCount/300) * 20+y, (p.cos(p.frameCount/600)/8+0.5)*250, 0, 0, 0, 0, 1, 0);
+		// p.background(150);
 		p.clear();
-		p.frameRate(60);
-		
-
-		panner.pan.value = playHeadx / 250;
+	
+		// panner.pan.value = playHeadx / 250;
 
 		p.pointLight(150, 150, 150, p.frameCount%p.width, 0, 200);
 		// p.directionalLight(255,255,255, -1, 0, -1);
-		p.ambientLight(0);
+		p.ambientLight(p.frameCount%p.width);
 
-		stepCount++;
-  		if(stepCount<600) {
-    		// tsne.step();
-  		}
+		// stepCount++;
+  		// if(stepCount<600) {
+    	// 	// tsne.step();
+  		// }
 
 		let an_hour_before = current_date.clone().subtract(1,'hours');
 		
@@ -207,6 +213,7 @@ const sketch = (p) => {
 			
 		}
 
+		counter.innerHTML = current_date.format();
 		current_date = current_date.add(1,'m');
 	
 
@@ -232,6 +239,5 @@ const sketch = (p) => {
 }
 
 export default sketch;
-new p5(sketch);
-
+new p5(sketch,document.getElementById('p5sketch'));
 
