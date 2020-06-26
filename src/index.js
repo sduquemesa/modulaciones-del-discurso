@@ -4,12 +4,12 @@ import Tone from 'tone';
 import StartAudioContext from 'startaudiocontext';
 import moment from 'moment';
 
-var counter = document.getElementById('counter');
-counter.innerHTML = 'hola';
+var counter_day = document.getElementById('counter-day');
+var counter_hour = document.getElementById('counter-hour');
+
 
 const sketch = (p) => {
 
-	console.log(p);
 	class DataPoint {
 		constructor() {
   			this.pos = p.createVector(0,0,0);
@@ -205,6 +205,7 @@ const sketch = (p) => {
 				d.setPos( p.createVector(x_coord, y_coord, z_coord) ).drawPoint();
 
 
+
 			} else if (moment(tsne_data[i].date).isBefore(an_hour_before)) {
 				last_index = i;
 			} else if (moment(tsne_data[i].date).isAfter(current_date)) {
@@ -213,9 +214,42 @@ const sketch = (p) => {
 			
 		}
 
-		counter.innerHTML = current_date.format();
-		current_date = current_date.add(1,'m');
-	
+
+		if (data_length - last_index != 1) {
+
+			counter_day.innerHTML = current_date.format("dddd, MMMM DD YYYY");
+			counter_hour.innerHTML = current_date.format("HH:mm");
+
+			current_date = current_date.add(1,'m');
+
+		} else {
+
+			for(let i=data_length-100; i < data_length; i++) {
+
+				let x_coord = tsne_data[i].tsne_coords_1*100;
+				let y_coord = tsne_data[i].tsne_coords_2*100;
+				let z_coord = tsne_data[i].tsne_coords_3*100;
+
+				let d = new DataPoint();
+
+				d.setCol( color_palette[tsne_data[i].topic_num] ).setSize(1);
+				
+				if( p.random() < 0.5 ) {
+					d.trig = 255;
+					d.canTrig = true;
+				}
+
+				d.setPos( p.createVector(x_coord, y_coord, z_coord) ).drawPoint();
+
+			}
+
+		}
+
+		// counter_day.innerHTML = current_date.format("dddd, MMMM DD YYYY");
+		// counter_hour.innerHTML = current_date.format("HH:mm");
+
+		// current_date = current_date.add(1,'d');
+
 
   		// p.noFill();
   		// p.stroke(255, 50);

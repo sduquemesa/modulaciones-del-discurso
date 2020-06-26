@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
   <head>
+	<link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
     <title>Modulaciones del Discurso</title>
     <style>
 		body {
@@ -22,16 +23,54 @@
 			/* background-color: lightblue; */
 			position: absolute;
 		}
+		
+		.counter-container {
+			color: antiquewhite;
+			/* display: flex; */
+			/* justify-content: space-between; */
+			font-family: 'Orbitron', sans-serif;
+			font-size: 1.5vw;
+			position: fixed;
+			width: 400px;
+			left: 5%;
+			bottom: 20px;
+			/* transform: translate(-50%, -50%); */
+			margin: 0 auto;
+		}
+
+		/* .counter-day {
+			color: antiquewhite;
+			font-family: 'Orbitron', sans-serif;
+			font-size: 1.5rem;
+			position: fixed;
+			left: 50%;
+			bottom: 20px;
+			transform: translate(-50%, -50%);
+			margin: 0 auto;
+		}
+
+		.counter-hour {
+			color: antiquewhite;
+			font-family: 'Orbitron', sans-serif;
+			font-size: 1.5rem;
+			position: fixed;
+			left: 50%;
+			bottom: 20px;
+			transform: translate(-50%, -50%);
+			margin: 0 auto;
+		} */
 
 	</style>
   </head>
   <body>
 	<div class="navbar-container">Nav!</div>
-	<p id='counter'>dasdasd</p>
 	<div id = "p5sketch">
 	<!-- p5 instance will be created here -->
 	</div>
-
+	<div class='counter-container'>
+		<p id='counter-day' class='counter-day'></p>
+		<p id='counter-hour' class='counter-hour'></p>
+	</div>
 	<script src="dist/main.js"></script>
   </body>
 </html>
