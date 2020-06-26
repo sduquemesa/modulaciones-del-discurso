@@ -1,5 +1,4 @@
 import p5 from 'p5/lib/p5.min';
-import 'p5/lib/addons/p5.dom.min';
 import Tone from 'tone';
 import StartAudioContext from 'startaudiocontext';
 import moment from 'moment';
@@ -160,11 +159,11 @@ const sketch = (p) => {
 	let zp = 0;
 	p.draw = () => {
 
-		let targetX = p.map(p.mouseX,0,p.width,-1,1);
+		let targetX = p.map(p.mouseX,0,p.width,-10,10);
 		let dx = targetX - x;
 		x += dx * easing;
 
-		let targetY = p.map(p.mouseY,0,p.height,-1,1);
+		let targetY = p.map(p.mouseY,0,p.height,-10,10);
 		let dy = targetY - y;
 		y += dy * easing;
 
