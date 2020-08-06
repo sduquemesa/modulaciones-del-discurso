@@ -25,12 +25,11 @@ const sketch = (p) => {
 			p.fill(this.color);
 			p.ambientMaterial(this.r, this.r,this.r);
 			p.push();
+			p.blendMode(p.LIGHTEST);
 			p.translate(this.pos.x, this.pos.y, this.pos.z);
-  		//   p.rotateX(this.size,0,0);
-			// p.box(this.size*1.5);
 			p.fill(this.color);
-			// p.fill(255,0,0,this.trig);
 			p.box(this.size*2);
+			p.pop();
 		
 			// let rnd = p.floor(p.random(10));
 			// synths[ rnd ].envelope.attack = 1/1000;
@@ -48,8 +47,6 @@ const sketch = (p) => {
 
   		  	this.trig-=100;
 
-  		  	p.pop();
-
   		}
 		
   		setPos(p) {
@@ -57,11 +54,8 @@ const sketch = (p) => {
   			return this;
   		}
 		
-  		setCol(color_string) {
-  			this.color = p.color(color_string);
-  			this.r = 0;
-  			this.g = 0;
-  			this.b = 0;
+  		setCol(color_list) {
+  			this.color = p.color(color_list[0],color_list[1],color_list[2]);
   			return this;
   		}
 		
@@ -91,8 +85,25 @@ const sketch = (p) => {
 	var data_length = null;
 	var current_date = null;
 
-	let color_palette = ['rgb(166,206,227)','rgb(31,120,180)','rgb(178,223,138)','rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)','rgb(255,127,0)','rgb(202,178,214)','rgb(106,61,154)']
+	// let color_palette = ['rgb(166,206,227)','rgb(31,120,180)','rgb(178,223,138)','rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)','rgb(255,127,0)','rgb(202,178,214)','rgb(106,61,154)']
+	let color_palette = [
+						[201, 26.9, 89.0],
+						[204, 82.8, 70.6],
+						[92, 38.1, 87.5],
+						[116, 72.5, 62.7],
+						[1, 39.0, 98.4],
+						[359, 88.5, 89.0],
+						[34, 56.1, 99.2],
+						[30, 100, 100],
+						[280, 16.8, 83.9],
+						[269, 60.4, 60.4] 
+						]
 
+	const scrollProperties = {
+		y: 0,
+		spd: null
+	};
+	  
 	moment.locale('es');
 
 	var panner = new Tone.Panner(-1).toMaster();
@@ -140,8 +151,8 @@ const sketch = (p) => {
 
 	p.setup = () => {
 
-		let canvas = p.createCanvas(p.windowWidth,p.windowHeight, p.WEBGL);
-
+		let canvas = p.createCanvas(p.windowWidth,p.windowHeight, p.WEBGL);	
+		p.colorMode(p.HSB);
 		p.smooth();
 
 		data_length = Object.keys(tsne_data).length;
@@ -149,7 +160,7 @@ const sketch = (p) => {
 		current_date = moment(tsne_data[100].date);
 		// const counter = selectAll('.counter');
 
-		p.frameRate(60);
+		p.frameRate(10);
 
 
 	}
@@ -158,16 +169,16 @@ const sketch = (p) => {
 	let zp = 0;
 	p.draw = () => {
 
-		let targetX = p.map(p.mouseX,0,p.width,-20,20);
+		let targetX = p.map(p.mouseX,0,p.width,-200,200);
 		let dx = targetX - x;
 		x += dx * easing;
 
-		let targetY = p.map(p.mouseY,0,p.height,-20,20);
+		let targetY = p.map(p.mouseY,0,p.height,-200,200);
 		let dy = targetY - y;
 		y += dy * easing;
 
-		p.camera(p.sin(p.frameCount/300) * 10+x, p.cos(p.frameCount/300) * 20+y, (p.cos(p.frameCount/400)/8+0.4)*500, 0, 0, 0, 0, 1, 0);
-		// p.background(150);
+		p.camera(p.sin(p.frameCount/300) * 10+x, p.cos(p.frameCount/300) * 20+y, (p.cos(p.frameCount/400)/8+0.4)*500-scrollProperties.y, 0, 0, 0, 0, 1, 0);
+		p.background(150);
 		p.clear();
 	
 		// panner.pan.value = playHeadx / 250;
@@ -215,8 +226,12 @@ const sketch = (p) => {
 
 		if (data_length - last_index != 1) {
 
-			counter_day.innerHTML = current_date.format("dddd, MMMM DD YYYY");
-			counter_hour.innerHTML = current_date.format("HH:mm");
+			counter_day.innerText = current_date.format("dddd, MMMM DD YYYY");
+			counter_hour.innerText = current_date.format("HH:mm");
+			// counter_hour.innerHTML = p.frameRate();
+			// counter_hour.innerHTML = scrollProperties.spd;
+			// counter_day.innerHTML = scrollProperties.y;
+
 
 			current_date = current_date.add(1,'m');
 
@@ -243,11 +258,6 @@ const sketch = (p) => {
 
 		}
 
-		// counter_day.innerHTML = current_date.format("dddd, MMMM DD YYYY");
-		// counter_hour.innerHTML = current_date.format("HH:mm");
-
-		// current_date = current_date.add(1,'d');
-
 
   		// p.noFill();
   		// p.stroke(255, 50);
@@ -267,6 +277,13 @@ const sketch = (p) => {
   }
   p.mousePressed = () => {
         StartAudioContext(Tone.context).then(function(){});
+  }
+
+  p.mouseWheel = (event) => {
+	scrollProperties.y -= event.deltaY/Math.abs(event.deltaY)*10;
+	scrollProperties.y = p.constrain(scrollProperties.y,0,500)
+	//uncomment to block page scrolling
+	return false;
   }
 }
 
