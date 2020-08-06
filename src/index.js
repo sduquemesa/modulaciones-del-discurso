@@ -154,7 +154,7 @@ const sketch = (p) => {
 
 		current_date = moment(tsne_data[100].date);
 
-		p.frameRate(10);
+		p.frameRate(15);
 
 
 	}
@@ -183,7 +183,7 @@ const sketch = (p) => {
 		// p.directionalLight(255,255,255, -1, 0, -1);
 		p.ambientLight(255);
 
-		let an_hour_before = current_date.clone().subtract(1,'hours');
+		let an_hour_before = current_date.clone().subtract(3,'hours');
 		
   		for(let i=last_index; i < data_length; i++) {
 
