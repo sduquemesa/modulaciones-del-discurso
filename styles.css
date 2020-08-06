@@ -33,7 +33,7 @@ div {
 
 .counter-container {
     color: white;
-    font-size: x-large;
+    font-size: xx-large;
     position: fixed;
     /* width: 400px; */
     left: 3vw;
@@ -123,10 +123,10 @@ div {
         right: 10vmin;
         width: 60px;
     }
-    /* .counter-container {
-        font-size: 10px; 
+    .counter-container {
+        font-size: large; 
         width: 100%;
-    } */
+    }
 
     #info-page {
         display: none;
