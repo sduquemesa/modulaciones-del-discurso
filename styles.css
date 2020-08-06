@@ -62,18 +62,13 @@ div {
     width: 100%;
 }
 
-@media only screen and (max-width: 768px) {
-    .button {
-        top: 10vmin;
-        right: 10vmin;
-        width: 60px;
-    }
-    .counter-container {
-        /* font-size: 10px;  */
-        /* width: 100%; */
-    }
+#info-page {
+    width: 100%;
 }
 
+#info-page-mobile {
+    display: none;
+}
 
 .overlay {
     position: absolute;
@@ -108,10 +103,6 @@ div {
     justify-content: space-evenly; */
 }
 
-#info-page {
-    width: 100%;
-}
-
 .close {
     position: fixed;
     top: 5vw;
@@ -125,6 +116,34 @@ div {
     .close:hover {
     color: gray;
 }
+
+@media only screen and (max-width: 768px) {
+    .button {
+        top: 10vmin;
+        right: 10vmin;
+        width: 60px;
+    }
+    /* .counter-container {
+        font-size: 10px; 
+        width: 100%;
+    } */
+
+    #info-page {
+        display: none;
+    }
+    #info-page-mobile {
+        display: block;
+        width: 90%;
+    }
+    .close {
+        position: absolute;
+        top: 1vmin;
+        right: 50vmin;
+        margin-right: 10em;
+        font-size: 80px;
+    }
+}
+
 
 .loadingclass {
     position: fixed; /* or absolute */
