@@ -23,14 +23,15 @@ const sketch = (p) => {
 			// p.noStroke();
 			p.strokeWeight(0.1);
 			p.fill(this.color);
-			p.ambientMaterial(this.r, this.r,this.r);
+			p.ambientMaterial(20,20,20);
+
 			p.push();
 			p.blendMode(p.LIGHTEST);
 			p.translate(this.pos.x, this.pos.y, this.pos.z);
 			p.fill(this.color);
 			p.box(this.size*2);
 			p.pop();
-		
+
 			// let rnd = p.floor(p.random(10));
 			// synths[ rnd ].envelope.attack = 1/1000;
 			// synths[ rnd ].triggerAttackRelease( Tone.Midi( ((255/20 + 2) - this.size + 2) * 10 ).toFrequency(), this.size/500);
@@ -65,18 +66,11 @@ const sketch = (p) => {
   		}
 	}
 
-	let Y;
-	let stepCount = 0;
-	let data = [];
-	let features = [];
-
-	let playHeadx = -250;
-	let playHeady = -250;
 	
 	let x = 0;
 	let y = 0;
 	let z = 0;
-	let easing = 0.9;
+	let easing = 0.075;
 	let synths = [];
 
 	var player;
@@ -159,15 +153,12 @@ const sketch = (p) => {
 		data_length = Object.keys(tsne_data).length;
 
 		current_date = moment(tsne_data[100].date);
-		// const counter = selectAll('.counter');
 
 		p.frameRate(10);
 
 
 	}
 
-
-	let zp = 0;
 	p.draw = () => {
 
 		let targetX = p.map(p.mouseX,0,p.width,-200,200);
@@ -188,14 +179,9 @@ const sketch = (p) => {
 	
 		// panner.pan.value = playHeadx / 250;
 
-		p.pointLight(150, 150, 150, p.frameCount%p.width, 0, 200);
+		p.pointLight(150, 150, 150, 500, 0, 200);
 		// p.directionalLight(255,255,255, -1, 0, -1);
-		p.ambientLight(p.frameCount%p.width);
-
-		// stepCount++;
-  		// if(stepCount<600) {
-    	// 	// tsne.step();
-  		// }
+		p.ambientLight(255);
 
 		let an_hour_before = current_date.clone().subtract(1,'hours');
 		
@@ -233,9 +219,6 @@ const sketch = (p) => {
 
 			counter_day.innerText = current_date.format("dddd, MMMM DD YYYY");
 			counter_hour.innerText = current_date.format("HH:mm");
-			// counter_hour.innerHTML = p.frameRate();
-			// counter_hour.innerHTML = scrollProperties.spd;
-			// counter_day.innerHTML = scrollProperties.y;
 
 
 			current_date = current_date.add(1,'m');
@@ -261,17 +244,7 @@ const sketch = (p) => {
 
 			}
 
-		}
-
-
-  		// p.noFill();
-  		// p.stroke(255, 50);
-		// p.box(500);
-		 
-		// date = date.add(1,'m');
-		// console.log(date.format("dddd, MMMM DD YYYY, HH:mm"));
-
-		
+		}		
 
 	}
 
