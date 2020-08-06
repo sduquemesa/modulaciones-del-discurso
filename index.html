@@ -5,241 +5,10 @@
 	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Quattrocento:wght@700&display=swap" rel="stylesheet">
     <title>Modulaciones del Discurso</title>
-    <style>
-		body {
-			/* background-color: whitesmoke; */
-			background-color: #1B1B1B;
-			overflow: hidden;
-			}
-
-		canvas {
-    		padding-left: 0;
-    		padding-right: 0;
-    		margin-left: auto;
-    		margin-right: auto;
-    		display: block;
-    		width: 100%;	
-		}
-
-		div {
-			/* background-color: lightblue; */
-			position: absolute;
-		}
-
-		.sketch {
-			position: absolute;
-			top: 0px;
-			left: 0px;
-			z-index:-1;
-  			/* right: 0;
-			padding-left: 0;
-    		padding-right: 0;
-    		margin-left: auto;
-    		margin-right: auto; */
-    		/* width: 100%;	 */
-		}
-		
-		.counter-container {
-			color: antiquewhite;
-			font-size: 1.5vw;
-			position: fixed;
-			width: 400px;
-			left: 3vh;
-			bottom: 1vh;
-			/* transform: translate(-50%, -50%); */
-			margin: 0 auto;
-		}
-
-		.counter-day {
-			font-family: 'Orbitron', sans-serif;
-		}
-
-		.counter-hour {
-			font-family: 'Orbitron', sans-serif;
-		}
-
-		nav {
-			height: 40px;
-			background-color: transparent;
-		}
-
-		.button {
-			font-size: 20px;
-			padding: 2px 13px 2px 13px;
-			color: #fff;
-			border: 0.5px solid whitesmoke;
-			border-radius: 100%;
-			text-decoration: none;
-			cursor: pointer;
-			transition: all 0.3s ease-out;
-			position: fixed;
-			top: 2vw;
-			right: 2vw;
-			font-family: 'Roboto', sans-serif;
-		}
-			.button:hover {
-			background: gray;
-		}
-
-		.overlay {
-			position: fixed;
-			top: 0;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			background: rgba(0, 0, 0, 0.7);
-			transition: opacity 500ms;
-			visibility: hidden;
-			opacity: 0;
-		}
-		.overlay:target {
-			visibility: visible;
-			opacity: 1;
-		}
-
-		.popup {
-			margin: 10vh auto;
-			padding: 1rem;
-			background: whitesmoke;
-			opacity: 0.8;
-			border-radius: 5px;
-			width: 30%;
-			height: 80%;
-			position: relative;
-			transition: all 1s ease-in-out;
-			/* display: flex;
-			justify-content: space-evenly; */
-		}
-
-		.popup h2 {
-			margin-top: 2vh;
-			/* padding-bottom: 1.5vh; */
-			color: black;
-			font-family: 'Quattrocento', serif;
-			font-size: 2vw;
-			text-align: center;
-			font-weight: bold;
-			padding-top: 3vh;
-		}
-		.popup .close {
-			position: absolute;
-			top: 1vmin;
-			left: 2vmin;
-			transition: all 200ms;
-			font-size: 5vmin;
-			font-weight: bold;
-			text-decoration: none;
-			color: #333;
-		}
-			.popup .close:hover {
-			color: gray;
-		}
-		.popup .content {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			font-size: 0.7em;
-			/* background-color: aqua; */
-			height: 80%;
-			padding-right: 1em;
-			overflow-y: auto;
-		}
-
-		
-
-		p {
-			font-family: 'Open Sans', sans-serif;
-			text-justify: auto;
-		}
-
-		.logo-ethos {
-			justify-self: flex-end;
-			align-self: center;
-			width: 60%;
-			
-		}
-
-		.logo-catul {
-			justify-self: flex-end;
-			align-self: center;
-			width: 90%;
-			/* bottom: 1vh; */
-		}
-
-		.loadingclass {
-			position: fixed; /* or absolute */
-			top: 50%;
-			left: 50%;
-			/* bring your own prefixes */
-			transform: translate(-50%, -50%);
-			color: antiquewhite;
-			font-size: 6vh;
-			font-family: 'Roboto';
-		}
-
-		.lds-ellipsis {
-		display: inline-block;
-		position: relative;
-		width: 80px;
-		height: 80px;
-		}
-		.lds-ellipsis div {
-		position: absolute;
-		top: 33px;
-		width: 13px;
-		height: 13px;
-		border-radius: 50%;
-		background: #fff;
-		animation-timing-function: cubic-bezier(0, 1, 1, 0);
-		}
-		.lds-ellipsis div:nth-child(1) {
-		left: 8px;
-		animation: lds-ellipsis1 0.6s infinite;
-		}
-		.lds-ellipsis div:nth-child(2) {
-		left: 8px;
-		animation: lds-ellipsis2 0.6s infinite;
-		}
-		.lds-ellipsis div:nth-child(3) {
-		left: 32px;
-		animation: lds-ellipsis2 0.6s infinite;
-		}
-		.lds-ellipsis div:nth-child(4) {
-		left: 56px;
-		animation: lds-ellipsis3 0.6s infinite;
-		}
-		@keyframes lds-ellipsis1 {
-		0% {
-			transform: scale(0);
-		}
-		100% {
-			transform: scale(1);
-		}
-		}
-		@keyframes lds-ellipsis3 {
-		0% {
-			transform: scale(1);
-		}
-		100% {
-			transform: scale(0);
-		}
-		}
-		@keyframes lds-ellipsis2 {
-		0% {
-			transform: translate(0, 0);
-		}
-		100% {
-			transform: translate(24px, 0);
-		}
-		}
-
-
-	</style>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-	<nav class="nav">
-		<a class="button" href="#popup1">i</a>
-	</nav>
+	<a class="button" href="#popup1"><img src="./assets/info-icon.svg" alt=""/></a>
 	<div id="p5sketch" class="sketch">
 	<!-- p5 instance will be created here -->
 	</div>
@@ -251,17 +20,17 @@
 	<div id="popup1" class="overlay">
 		<div class="popup">
 			<a class="close" href="#">&times;</a>
-			<h2>Modulaciones del Discurso</h2>
+			<!-- <h2>Modulaciones del Discurso</h2>
 			<div class="content">
 				<p>El tiempo y su flujo son los agentes de la memoria. A este, el tiempo, le sobreviene el olvido o la historia, historia que efímera o persistente se define ahora en lo digital. </p>
 				<p>¿De qué habla Medellín y qué tanto perdura?</p>
 				<p>Esta intervención explora la persistencia de los tópicos de ciudad a partir de los Twits publicados por sus habitantes. Un algoritmo de Inteligencia Artificial clasifica los tweets de acuerdo a sus relaciones textuales y, partiendo de estos datos, crea una experiencia audiovisual que pone en evidencia las relaciones ocultas entre aquello que decimos y su transcurrir.</p>
 				<img src="assets\ETlogo.svg" alt="Ethos Tekne" class='logo-ethos'>
 				<img src="assets\logoCATUL.png" alt="Logo red CATUL" class='logo-catul'>
-			</div>
-
+			</div> -->
+			<img id="info-page" src="./assets/infooage.svg" alt="">
 		</div>
 	</div>
-	<script src="dist/main.js"></script>
+||	<script src="dist/main.js"></script>
   </body>
 </html>

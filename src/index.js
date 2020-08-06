@@ -75,6 +75,7 @@ const sketch = (p) => {
 	
 	let x = 0;
 	let y = 0;
+	let z = 0;
 	let easing = 0.9;
 	let synths = [];
 
@@ -177,7 +178,11 @@ const sketch = (p) => {
 		let dy = targetY - y;
 		y += dy * easing;
 
-		p.camera(p.sin(p.frameCount/300) * 10+x, p.cos(p.frameCount/300) * 20+y, (p.cos(p.frameCount/400)/8+0.4)*500-scrollProperties.y, 0, 0, 0, 0, 1, 0);
+		let targetZ = scrollProperties.y;
+		let dz = targetZ - z;
+		z += dz * easing;
+
+		p.camera(p.sin(p.frameCount/300) * 10+x, p.cos(p.frameCount/300) * 20+y, (p.cos(p.frameCount/400)/8+0.4)*500-z, 0, 0, 0, 0, 1, 0);
 		p.background(150);
 		p.clear();
 	
@@ -280,10 +285,10 @@ const sketch = (p) => {
   }
 
   p.mouseWheel = (event) => {
-	scrollProperties.y -= event.deltaY/Math.abs(event.deltaY)*10;
+	scrollProperties.y -= event.deltaY/Math.abs(event.deltaY)*5;
 	scrollProperties.y = p.constrain(scrollProperties.y,0,500)
 	//uncomment to block page scrolling
-	return false;
+	return False;
   }
 }
 
